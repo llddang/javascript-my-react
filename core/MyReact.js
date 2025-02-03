@@ -1,7 +1,8 @@
 export default function MyReact() {
   let _root = null;
   let _rootComponent = null;
-  let _state = null;
+  let _hooks = [],
+    _currentHookIdx = 0;
 
   function createRoot(root) {
     _root = root;
@@ -16,15 +17,21 @@ export default function MyReact() {
     _root.innerHTML = comp;
   }
 
+  function _render() {
+    const comp = _rootComponent();
+    _root.innerHTML = comp;
+    _currentHookIdx = 0;
+  }
   function useState(initialValue) {
-    _state = _state ?? initialValue;
+    _hooks[_currentHookIdx] = _hooks[_currentHookIdx] || initialValue;
 
+    const hookIdx = _currentHookIdx;
     function setState(newValue) {
-      _state = newValue;
+      _hooks[hookIdx] = newValue;
       _render();
     }
 
-    return [_state, setState];
+    return [_hooks[_currentHookIdx++], setState];
   }
 
   return { createRoot, render, useState };
