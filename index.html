@@ -7,5 +7,26 @@
   </head>
   <body>
     <div id="root"></div>
+    <script type="module">
+      import MyReact, { createRoot, useState } from "./core/MyReact.js";
+
+      const App = () => {
+        const [count, setCount] = useState(0);
+
+        window.increase = () => setCount(count + 1);
+        window.decrease = () => setCount(count - 1);
+
+        return `
+          <div>
+            <h1>Hello World!</h1>
+            <p>count : ${count}</p>
+            <button onclick="increase()">+1</button>
+            <button onclick="decrease()">-1</button>
+          </div>`;
+      };
+
+      const root = createRoot(document.getElementById("root"));
+      root.render(App);
+    </script>
   </body>
 </html>
