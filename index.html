@@ -23,8 +23,12 @@
         window.changeText = (event) => setText(event.target.value);
 
         useEffect(() => {
-          console.log("Effect function is called.");
+          console.log(`count is changed to ${count}`);
         }, [count]);
+
+        useEffect(() => {
+          console.log(`text is changed to ${text}`);
+        }, [text]);
 
         return `
           <div>

@@ -3,7 +3,6 @@ export default function MyReact() {
   let _rootComponent = null;
   let _hooks = [],
     _currentHookIdx = 0;
-  let _deps = null;
 
   function createRoot(root) {
     _root = root;
@@ -42,14 +41,19 @@ export default function MyReact() {
 
   function useEffect(callback, depArray) {
     const hasNoDeps = !depArray;
-    const hasChangedDeps = _deps
-      ? !depArray.every((el, i) => el === _deps[i])
+    const prevDeps = _hooks[_currentHookIdx]
+      ? _hooks[_currentHookIdx].deps
+      : undefined;
+
+    const hasChangedDeps = prevDeps
+      ? !depArray.every((el, i) => el === prevDeps[i])
       : true;
 
     if (hasNoDeps || hasChangedDeps) {
       callback();
-      _deps = depArray;
+      _hooks[_currentHookIdx] = { deps: depArray };
     }
+    _currentHookIdx++;
   }
 
   return { createRoot, render, useState, useEffect };
