@@ -23,11 +23,15 @@ export default function MyReact() {
     _currentHookIdx = 0;
   }
   function useState(initialValue) {
-    _hooks[_currentHookIdx] = _hooks[_currentHookIdx] || initialValue;
+    _hooks[_currentHookIdx] =
+      _hooks[_currentHookIdx] ??
+      (typeof initialValue === "function" ? initialValue() : initialValue);
 
     const hookIdx = _currentHookIdx;
     function setState(newValue) {
-      _hooks[hookIdx] = newValue;
+      if (typeof newValue === "function")
+        _hooks[hookIdx] = newValue(_hooks[hookIdx]);
+      else _hooks[hookIdx] = newValue;
       _render();
     }
 

@@ -12,10 +12,10 @@
 
       const App = () => {
         const [count, setCount] = useState(0);
-        const [text, setText] = useState("");
+        const [text, setText] = useState(() => "asdf");
 
-        window.increase = () => setCount(count + 1);
-        window.decrease = () => setCount(count - 1);
+        window.increase = () => setCount((prev) => prev + 1);
+        window.decrease = () => setCount((prev) => prev - 1);
         window.changeText = (event) => setText(event.target.value);
 
         return `
