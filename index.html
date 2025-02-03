@@ -8,7 +8,11 @@
   <body>
     <div id="root"></div>
     <script type="module">
-      import MyReact, { createRoot, useState } from "./core/MyReact.js";
+      import MyReact, {
+        createRoot,
+        useState,
+        useEffect,
+      } from "./core/MyReact.js";
 
       const App = () => {
         const [count, setCount] = useState(0);
@@ -17,6 +21,10 @@
         window.increase = () => setCount((prev) => prev + 1);
         window.decrease = () => setCount((prev) => prev - 1);
         window.changeText = (event) => setText(event.target.value);
+
+        useEffect(() => {
+          console.log("Effect function is called.");
+        }, [count]);
 
         return `
           <div>
