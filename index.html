@@ -24,10 +24,12 @@
 
         useEffect(() => {
           console.log(`count is changed to ${count}`);
+          return () => console.log("count useEffect unmounted");
         }, [count]);
 
         useEffect(() => {
           console.log(`text is changed to ${text}`);
+          return () => console.log("text Cleanup function is called.");
         }, [text]);
 
         return `
