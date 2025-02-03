@@ -7,5 +7,30 @@
   </head>
   <body>
     <div id="root"></div>
+    <script type="module">
+      import MyReact, { createRoot, useState } from "./core/MyReact.js";
+
+      const App = () => {
+        const [count, setCount] = useState(0);
+        const [text, setText] = useState(() => "asdf");
+
+        window.increase = () => setCount((prev) => prev + 1);
+        window.decrease = () => setCount((prev) => prev - 1);
+        window.changeText = (event) => setText(event.target.value);
+
+        return `
+          <div>
+            <h1>Hello World!</h1>
+            <p>count : ${count}</p>
+            <button onclick="increase()">+1</button>
+            <button onclick="decrease()">-1</button>
+            <p>text : ${text}</p>
+            <input value="${text}" onchange="changeText(event)" />
+          </div>`;
+      };
+
+      const root = createRoot(document.getElementById("root"));
+      root.render(App);
+    </script>
   </body>
 </html>

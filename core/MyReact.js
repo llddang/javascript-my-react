@@ -1,6 +1,8 @@
 export default function MyReact() {
   let _root = null;
   let _rootComponent = null;
+  let _hooks = [],
+    _currentHookIdx = 0;
 
   function createRoot(root) {
     _root = root;
@@ -15,7 +17,28 @@ export default function MyReact() {
     _root.innerHTML = comp;
   }
 
-  return { createRoot, render };
+  function _render() {
+    const comp = _rootComponent();
+    _root.innerHTML = comp;
+    _currentHookIdx = 0;
+  }
+  function useState(initialValue) {
+    _hooks[_currentHookIdx] =
+      _hooks[_currentHookIdx] ??
+      (typeof initialValue === "function" ? initialValue() : initialValue);
+
+    const hookIdx = _currentHookIdx;
+    function setState(newValue) {
+      if (typeof newValue === "function")
+        _hooks[hookIdx] = newValue(_hooks[hookIdx]);
+      else _hooks[hookIdx] = newValue;
+      _render();
+    }
+
+    return [_hooks[_currentHookIdx++], setState];
+  }
+
+  return { createRoot, render, useState };
 }
 
-export const { createRoot, render } = MyReact();
+export const { createRoot, render, useState } = MyReact();
